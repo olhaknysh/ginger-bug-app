@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Про Імбирну Ферментацію</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/general.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/countdown.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Відлік по днях</h1>
+    </header>
+
+    {% include 'nav.html' %}
+
+    <main>
+      <div class="container">
+        <div id="fermentationSection">
+          {% if current_user.is_authenticated%} {% if
+          current_user.fermentation_start %}
+          <p id="fermentationDayText">
+            Сьогодні: {{ (datetime.utcnow() -
+            current_user.fermentation_start).days + 1 }} день ферментації
+          </p>
+          <button id="stopFermentationBtn">Зупинити ферментацію</button>
+          {% else %}
+          <div></div>
+          <button id="startFermentationBtn">Почати ферментацію</button>
+          {% endif %} {% endif %}
+        </div>
+
+        <div id="calendar">
+          <div id="days-container"></div>
+        </div>
+        <div id="day-info">
+          <h2>Інформація на сьогодні</h2>
+          <p id="day-description">
+            Виберіть день з календаря, щоб побачити інформацію про ферментацію.
+          </p>
+        </div>
+        <div id="progress-bar">
+          <div id="progress" class="progress"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/dropdown.js') }}"></script>
+    <script>
+      const currentDay = {{ current_day }};
+    </script>
+    <script src="{{ url_for('static', filename='scripts/fermentation-calendar.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/fermentation-process.js') }}"></script>
+  </body>
+</html>

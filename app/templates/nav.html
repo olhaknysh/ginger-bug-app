@@ -1,0 +1,19 @@
+<nav>
+  <ul class="navbar">
+    <li><a href="{{ url_for('main.about') }}">Про Імбирну Ферментацію</a></li>
+    <li><a href="{{ url_for('main.recipes') }}">Рецепти</a></li>
+    <li><a href="{{ url_for('main.countdown') }}">Відлік по днях</a></li>
+
+    {% if current_user.is_authenticated %}
+    <div class="dropdown" style="position: relative">
+      <a class="drop-btn"> Привіт, {{ current_user.username }} ⬇️ </a>
+      <div class="dropdown-content">
+        <a href="{{ url_for('profile.profile') }}">Мій кабінет</a>
+        <a href="{{ url_for('auth.logout') }}">Вийти</a>
+      </div>
+    </div>
+    {% else %}
+    <a href="{{ url_for('auth.login') }}">Увійти</a>
+    {% endif %}
+  </ul>
+</nav>

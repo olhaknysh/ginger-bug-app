@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Про Імбирну Ферментацію</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/general.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Кабінет {{ current_user.username }}</h1>
+    </header>
+
+    <nav>
+      <ul class="navbar">
+        <li><a href="{{ url_for('main.about') }}">Про Імбирну Ферментацію</a></li>
+        <li><a href="{{ url_for('main.recipes') }}">Рецепти</a></li>
+        <li><a href="{{ url_for('main.countdown') }}">Відлік по днях</a></li>
+        <li><a href="/logout">Вийти</a></li>
+    </nav>
+
+    <main>
+      {% if day_number %}
+  <p>Сьогодні: {{ day_number }} день ферментації</p>
+{% else %}
+  <p>Ферментація ще не розпочата</p>
+{% endif %}
+
+      <h2>Збережені рецепти:</h2>
+
+    {% if recipes %}
+        <ul>
+            {% for recipe in recipes %}
+                <li>
+                    <h3>{{ recipe.title }}</h3>
+                    <p>{{ recipe.description }}</p>
+                    <a href="/recipes#recipe-{{ recipe.id }}">Переглянути</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас ще немає збережених рецептів.</p>
+    {% endif %}
+      
+    </main>
+  </body>
+</html>

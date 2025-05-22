@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Про Імбирну Ферментацію</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/general.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/recipes.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Рецепти</h1>
+    </header>
+
+    {% include 'nav.html' %}
+
+    <main>
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          {% for recipe in recipes %}
+          <div class="swiper-slide" data-id="{{ recipe.id }}">
+            <div class="recipe-card">
+              <h2>{{ recipe.title }}</h2>
+              {% if current_user.is_authenticated %}
+              <button
+                class="favorite-btn"
+                data-id="{{ recipe.id }}"
+              >
+            {% if recipe in current_user.favorite_recipes %} ❤️ {% else %} 🤍 {% endif %}</button>
+              </button>
+                
+              {% endif %}
+              
+              <p class="recipe-description">{{ recipe.description }}</p>
+
+              <div>
+                {% for step in recipe.steps %}
+                <div class="recipe-step">
+                  <h3>
+                    <span class="step-number">Крок {{ loop.index }}:</span> {{
+                    step.title }}
+                  </h3>
+                  <p>{{ step.content }}</p>
+                </div>
+                {% endfor %}
+              </div>
+
+              {% if session.get("user") %}
+              <form
+                method="post"
+                action="{{ url_for('save_recipe', recipe_id=recipe.id) }}"
+              >
+                {% if recipe in current_user.saved %}
+                <button type="submit" disabled>✅ Збережено</button>
+                {% else %}
+                <button type="submit">💾 Зберегти</button>
+                {% endif %}
+              </form>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/swiper.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/favorite.js') }}"></script>
+  </body>
+</html>
